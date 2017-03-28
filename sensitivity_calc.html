@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <style type="text/css">
+        body {
+            margin: 0px;
+            padding: 0px;
+        }
+        .center {
+            margin: auto;
+            width: 50%;
+            padding: 10px;
+        }
+
+      #myProgress {
+          width: 100%;
+          background-color: #ddd;
+        }
+
+        #myBar {
+          width: 0%;
+          height: 30px;
+          background-color: #00e676;
+        }
+
+    </style>
+
+
+  <title>Evize Sensitivity Calculator</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+</head>
+<body>
+
+  <div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+      <br><br>
+      <h1 class="header center green-text text-accent-3">Sensitivity Calibration</h1>
+      <div class="row s12">
+        <h5 class="header col s12 light">Our calibration tool works by adjusting your sensitivity to reflect how you perceive the distance between two points on a given day. This should help eliminate under/over clicking and help you become more precise.   </h5>
+      </div>
+
+      <br><br>
+
+    </div>
+  </div>
+
+
+  <div class="container">
+    <div class="section">
+        <div class="row">
+      <!--   Inch Per 360 Form   -->
+        <div class="col s6">
+            <br>
+            <form  method="get">
+                DPI: <input type="number" id="DPI1" value="800"> <br>
+                Windows Multiplier: <input type="number" id="winmult1" value="1"><br>
+                Base Game Sensitivity: <input type="number" id="sens1" value="1.4"><br>
+                m_yaw(.022) <input type="number" id="m_yaw1" value=".022"><br>
+            </form>
+            <a id="download-button" class="btn-large waves-effect waves-light green accent-3" onclick="update()">Update</a>
+            <br><br><br><br><br><br><br>
+
+            <div class="row">
+            <h5 class="header col s4 light"><b>Inches per 360:</b></h5>
+            <h5 class="header col s2 light" id="inputinch">14.6104</h5>
+            </div>
+        </div>
+
+        <div class="col s6">
+            <table>
+                <thead>
+                <tr>
+                    <th data-field="id">Windows Sensitivity</th>
+                    <th data-field="name">Multiplier</th>
+                </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1/11</td>
+                    <td>.0625</td>
+
+                  </tr>
+                  <tr>
+                    <td>2/11</td>
+                    <td>.0125</td>
+
+                  </tr>
+                  <tr>
+                    <td>3/11</td>
+                    <td>.25</td>
+                  </tr>
+                  <tr>
+                    <td>4/11</td>
+                    <td>.5</td>
+                  </tr>
+                  <tr>
+                    <td>5/11</td>
+                    <td>.75</td>
+                  </tr>
+                  <tr>
+                    <td>6/11</td>
+                    <td>1</td>
+                  </tr>
+                  <tr>
+                    <td>7/11</td>
+                    <td>1.5</td>
+                  </tr>
+                  <tr>
+                    <td>8/11</td>
+                    <td>2</td>
+                  </tr>
+                  <tr>
+                    <td>9/11</td>
+                    <td>2.5</td>
+                  </tr>
+                  <tr>
+                    <td>10/11</td>
+                    <td>3</td>
+                  </tr>
+                  <tr>
+                    <td>11/11</td>
+                    <td>3.5</td>
+                  </tr>
+                </tbody>
+              </table>
+        </div>
+
+        </div>
+      </div>
+
+    </div>
+    <br>
+
+
+    <div class="container">
+      <div class="section">
+        <div class="row">
+          <h5 class="header col s12 light">To compare percieved distance to clicked distance, click between the centers of the green dots 20 times.</h5>
+        </div>
+      </div>
+      <div class="section">
+        <div class="row">
+          <div class="col s12 center">
+            <canvas id="ClickArea" width="1000" height="600" background-color:"#d3d3d3"></canvas>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s12">
+            <div id="myProgress">
+                <div id="myBar"></div>
+            </div>
+            <br>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s3">
+            <a id="calibrate-button" class="btn-large waves-effect waves-light green accent-3">Calibrate Sensitivity</a>
+          </div>
+          <div class="col s9">
+            <h5 class="header light"><b>Calibrated Sensitivity:</b>&nbsp;<span id="calibratedsens"></span></h5>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+  <footer class="page-footer blue-grey lighten-3">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">About Us</h5>
+          <p class="grey-text text-lighten-4">Our goal at Evize is to be the home for eSports team management and development. We are a team of college athletes who want to use our experience in traditional athletics to improve the way teams are managed and players improve. </p>
+
+
+        </div>
+        <div class="col l3 s12">
+
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Contact Us</h5>
+          <ul>
+            <li><a class="white-text" href="#!">evizellc@gmail.com</a></li>
+            <li><a class="white-text" href="#!">Twitter</a></li>
+            <li><a class="white-text" href="#!">Facebook</a></li>
+
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
+  </footer>
+
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+     <script>
+      $(function() {
+        var xcoords = [];
+        var xavg = [];
+        var ycoords = [];
+        var yavg = [];
+        var delta = [];
+        var ratio = [];
+        var avgratio = 0;
+
+        var DPI=800;
+        var winmult=1;
+        var sens=1.4;
+        var m_yaw=.022;
+        var canvas;
+        var calibratedsens;
+
+        var inputinchper360 = 14.6104;
+        var outputinchper360;
+
+        //This function gets the position of the mouse click//
+        function getPosition(mouseX, mouseY){
+          var x = new Number();
+          var y = new Number();
+          var canvas = document.getElementById("ClickArea");
+
+          if (mouseX != undefined && mouseY != undefined){
+
+            x = mouseX;
+            y = mouseY;
+
+            xcoords.push(x);
+            ycoords.push(y);
+            xavg.push(1);
+            yavg.push(1);
+            delta.push(1);
+
+          }
+          else // Firefox method to get the position
+          {
+            x = event.clientX + document.body.scrollLeft +
+                document.documentElement.scrollLeft;
+            y = event.clientY + document.body.scrollTop +
+                document.documentElement.scrollTop;
+          }
+
+          x -= canvas.offsetLeft;
+          y -= canvas.offsetTop;
+
+          //alert("x: " + x + "  y: " + y);//
+        }
+
+        function update() {
+          var DPI = document.getElementById("DPI1").value;
+          var winmult = document.getElementById("winmult1").value;
+          var sens = document.getElementById("sens1").value;
+          var m_yaw = document.getElementById("m_yaw1").value;
+          inputinchper360 = 360/(DPI * winmult * sens * m_yaw);
+          document.getElementById("inputinch").innerHTML = inputinchper360.toPrecision([6]).toString();
+        }
+
+        var canvas = document.getElementById("ClickArea");
+        var ctx = canvas.getContext("2d");
+        ctx.fillStyle = "#d3d3d3";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        var context = canvas.getContext('2d');
+        var centerX = canvas.width * .5;
+        var centerY = canvas.height * .5;
+        var radius = 8;
+
+        context.beginPath();
+        context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+        context.fillStyle = 'green';
+        context.fill();
+        context.lineWidth = 5;
+        context.strokeStyle = '#003300';
+        context.stroke();
+
+        var areaRadius = 400;
+
+        var width = 0;
+
+        $("#ClickArea").click(function(event) {
+          var x = 0;
+          var y = 0;
+
+          var rect = canvas.getBoundingClientRect();
+          var mouseX = event.clientX - rect.left;
+          var mouseY = event.clientY - rect.top;
+
+          getPosition(mouseX, mouseY);
+
+          for (var i = 0; i < 10; i++) {
+            angle = Math.random() * 2 * Math.PI;
+            x = Math.cos(angle) * areaRadius + mouseX;
+            y = Math.sin(angle) * areaRadius + mouseY;
+            if (x >= 0 && x < canvas.width && y >= 0 && y < canvas.height) {
+              break;
+            }
+          }
+
+          centerX = x;
+          centerY = y;
+          ctx.fillStyle = "#d3d3d3";
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          context.beginPath();
+          context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+          context.fillStyle = 'green';
+          context.fill();
+          context.lineWidth = 5;
+          context.strokeStyle = '#003300';
+          context.stroke();
+
+          width = width + 5;
+          $("#myBar").css("width", width + "%");
+          check1();
+          check2();
+        });
+
+        $("#calibrate-button").click(function(event) {
+          xlen = xcoords.length;
+          ylen = ycoords.length;
+          xavglen = xavg.length;
+          yavglen = yavg.length;
+
+          if (xlen < 2) {
+            $("#calibratedsens").text("Click the circle until the bar turns black.");
+            return;
+          }
+
+          xavg.pop();
+          yavg.pop();
+          delta.pop();
+          //This Calculates the distance between clicks in the X-dir//
+          for (i=0;i<(xlen - 1);i++){
+              xavg[i]= (xcoords[i] - xcoords[i+1]);
+          }
+          //This Calculates the distance between clicks in the Y-dir//
+          for (i=0;i<(ylen - 1);i++){
+              yavg[i]= (ycoords[i] - ycoords[i+1]);
+          }
+          //document.getElementById("xavg").innerHTML = xavg.toString();
+          //document.getElementById("yavg").innerHTML = yavg.toString();
+
+          //This calculates the Total distance between clicks//
+          for (i=0;i<(xavglen - 1);i++){
+              delta[i] =  ((xavg[i])**2 + (yavg[i])**2)**.5;
+          }
+          //document.getElementById("delta").innerHTML = delta.toString();
+
+          //This compares the recorded distance to the true distance between the points//
+          for (i=0;i<(xavglen - 1);i++){
+              ratio[i] = delta[i]/400;
+          }
+          //document.getElementById("ratio").innerHTML = ratio.toString();
+
+          //This sums the ratio list//
+          for (i=0;i<(xavglen - 1);i++){
+              avgratio = (avgratio + ratio[i]);
+          }
+          //This completes the average for the ratio list//
+          avgratio = avgratio/(xavglen-1);
+          //document.getElementById("avgratio").innerHTML = avgratio.toString();
+
+          outputinchper360 = avgratio*inputinchper360;
+          //document.getElementById("outputinchper360").innerHTML = outputinchper360.toString();
+
+          calibratedsens = 360/(outputinchper360*DPI*m_yaw*winmult);
+          $("#calibratedsens").text(calibratedsens);
+        });
+
+        function check1(){
+          var check1 = width - 105;
+          if (check1 == 0){
+            $("#myBar").css("width", 0 + '%');
+            width = 0;
+            $("#myBar").css("background", '#00e676');
+          }
+        }
+
+        function check2(){
+          var check2 = width - 100;
+          if (check2 == 0){
+            $("#myBar").css("background", '#000000');
+          }
+        }
+      });
+    </script>
+  </body>
+
+
+
+
+ <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="js/materialize.js"></script>
+  <script src="js/init.js"></script>
+</html>
