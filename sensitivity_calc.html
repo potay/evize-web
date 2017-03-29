@@ -7,6 +7,7 @@
         body {
             margin: 0px;
             padding: 0px;
+            background-color:#eeeeee 
         }
         .center {
             margin: auto;
@@ -36,13 +37,15 @@
   <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
 </head>
 <body>
-
+ <nav class="blue-grey lighten-3" role="navigation">
+      <img href="index.html" src="Evize%20Logo%201.16.png" width="60">
+  </nav>
   <div class="section no-pad-bot" id="index-banner">
     <div class="container">
       <br><br>
       <h1 class="header center green-text text-accent-3">Sensitivity Calibration</h1>
       <div class="row s12">
-        <h5 class="header col s12 light">Our calibration tool works by adjusting your sensitivity to reflect how you perceive the distance between two points on a given day. This should help eliminate under/over clicking and help you become more precise.   </h5>
+        <h5 class="header col s12 light">Our calibration tool works by adjusting your in game sensitivity to reflect how you perceive the distance between two points. When used before each time you play, you are corrected back to your base sensitivity,. This should help eliminate under/over clicking and help your aim become more precise. </h5>
       </div>
 
       <br><br>
@@ -141,7 +144,7 @@
     <div class="container">
       <div class="section">
         <div class="row">
-          <h5 class="header col s12 light">To compare percieved distance to clicked distance, click between the centers of the green dots 20 times.</h5>
+          <h5 class="header col s12 light">Click the dot as quickly and as accurately as you can at least 20 times. More clicks equal better calibration</h5>
         </div>
       </div>
       <div class="section">
@@ -162,9 +165,13 @@
           <div class="col s3">
             <a id="calibrate-button" class="btn-large waves-effect waves-light green accent-3">Calibrate Sensitivity</a>
           </div>
-          <div class="col s9">
+          <div class="col s6">
             <h5 class="header light"><b>Calibrated Sensitivity:</b>&nbsp;<span id="calibratedsens"></span></h5>
           </div>
+         <div class="col s3 right-align">
+            <a id="reset-button" class="btn-large waves-effect waves-light green accent-3">Reset</a>
+          </div>
+            
         </div>
       </div>
     </div>
@@ -177,7 +184,7 @@
       <div class="row">
         <div class="col l6 s12">
           <h5 class="white-text">About Us</h5>
-          <p class="grey-text text-lighten-4">Our goal at Evize is to be the home for eSports team management and development. We are a team of college athletes who want to use our experience in traditional athletics to improve the way teams are managed and players improve. </p>
+          <p class="grey-text text-lighten-4">We are a team of college athletes and eSports enthusiasts who want to use our experiences with traditional sports to improve the way eSports teams are manages and developed </p>
 
 
         </div>
@@ -188,8 +195,7 @@
           <h5 class="white-text">Contact Us</h5>
           <ul>
             <li><a class="white-text" href="#!">evizellc@gmail.com</a></li>
-            <li><a class="white-text" href="#!">Twitter</a></li>
-            <li><a class="white-text" href="#!">Facebook</a></li>
+            
 
           </ul>
         </div>
@@ -275,7 +281,7 @@
 
         context.beginPath();
         context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
-        context.fillStyle = 'green';
+        context.fillStyle = '#00e676';
         context.fill();
         context.lineWidth = 5;
         context.strokeStyle = '#003300';
@@ -288,6 +294,7 @@
         $("#ClickArea").click(function(event) {
           var x = 0;
           var y = 0;
+          var done = false;
 
           var rect = canvas.getBoundingClientRect();
           var mouseX = event.clientX - rect.left;
@@ -295,7 +302,7 @@
 
           getPosition(mouseX, mouseY);
 
-          for (var i = 0; i < 10; i++) {
+          for (var i = 0; i < 100; i++) {
             angle = Math.random() * 2 * Math.PI;
             x = Math.cos(angle) * areaRadius + mouseX;
             y = Math.sin(angle) * areaRadius + mouseY;
@@ -310,16 +317,20 @@
           ctx.fillRect(0, 0, canvas.width, canvas.height);
           context.beginPath();
           context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
-          context.fillStyle = 'green';
+          context.fillStyle = '#00e676';
           context.fill();
           context.lineWidth = 5;
           context.strokeStyle = '#003300';
           context.stroke();
-
-          width = width + 5;
+          
+         
+          if (width < 100) {
+            width = width + 5;
+          }
           $("#myBar").css("width", width + "%");
+          //check2();
           check1();
-          check2();
+        
         });
 
         $("#calibrate-button").click(function(event) {
@@ -373,13 +384,26 @@
           calibratedsens = 360/(outputinchper360*DPI*m_yaw*winmult);
           $("#calibratedsens").text(calibratedsens);
         });
+          
+        $("#reset-button").click(function(event) {
+            xcoords = [];
+            ycoords = [];
+             $("#myBar").css("width", 0);
+            $("#calibratedsens").text("");
+            
+            
+            
+        });
 
         function check1(){
           var check1 = width - 105;
           if (check1 == 0){
             $("#myBar").css("width", 0 + '%');
-            width = 0;
             $("#myBar").css("background", '#00e676');
+          }
+          var check2 = width - 100;
+          if (check2 == 0){
+            $("#myBar").css("background", '#000000');
           }
         }
 
